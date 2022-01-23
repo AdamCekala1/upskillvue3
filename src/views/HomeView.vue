@@ -6,7 +6,7 @@ import { useQuestions, Question, SearchParams } from '@/composables/useQuestions
 import { ref, Ref } from 'vue';
 
 const params: Ref<SearchParams> = ref<SearchParams>();
-const updateParams = (newValue: Partial<SearchParams>) =>{
+const updateParams = (newValue: Partial<SearchParams>) => {
      console.log('update params -> ', newValue);
      params.value = newValue;
 };
