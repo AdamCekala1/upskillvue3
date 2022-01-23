@@ -12,7 +12,7 @@
 </div>
 </template>
 
-<style>
+<style scoped>
 .loader {
     position: fixed;
     background: red;
