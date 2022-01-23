@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import QuestionsList from '@/components/QuestionsList.vue';
-import Filters from '@/components/Filters.vue';
+import TheQuestionsList from '@/components/TheQuestionsList.vue';
+import TheQuestionsFilters from '@/components/TheQuestionsFilters.vue';
 
-import { useQuestions, Question, SearchParams } from '@/services/questions';
+import { useQuestions, Question, SearchParams } from '@/composables/useQuestions';
 import { ref, Ref } from 'vue';
 
-const params: Ref<SearchParams> = ref<SearchParams>({title: '', type: null});
+const params: Ref<SearchParams> = ref<SearchParams>();
 const updateParams = (newValue: Partial<SearchParams>) =>{
+     console.log('update params -> ', newValue);
      params.value = newValue;
 };
 
@@ -15,6 +16,6 @@ const questions: Ref<Question[]> = httpValue.questions;
 </script>
 
 <template>
-     <Filters @params-change="updateParams"/>
-     <QuestionsList v-bind:questions="questions"/>
+     <TheQuestionsFilters @params-change="updateParams"/>
+     <TheQuestionsList v-model:questions="questions"/>
 </template>

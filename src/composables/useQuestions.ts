@@ -1,5 +1,5 @@
 import { Ref } from 'vue'
-import { useHttp } from '@/services/http';
+import { useHttp } from '@/composables/useHttp';
 
 export enum QuestionType {
     JUNIOR = 'junior',
