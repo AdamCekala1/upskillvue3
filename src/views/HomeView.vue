@@ -17,5 +17,5 @@ const questions: Ref<Question[]> = httpValue.questions;
 
 <template>
      <TheQuestionsFilters @params-change="updateParams"/>
-     <TheQuestionsList v-model:questions="questions"/>
+     <TheQuestionsList :questions="questions"/>
 </template>
