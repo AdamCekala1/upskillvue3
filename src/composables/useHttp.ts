@@ -1,8 +1,9 @@
-import { ref, isRef, watch, Ref } from 'vue'
+import { ref, isReactive, watch, reactive } from 'vue'
 import axios from 'axios'
 import { useLoaderStore } from '@/stores/loader';
+import { SearchParams } from './useQuestions';
 
-export function useHttp(endpoint: string = 'questions', params?: Ref<any>) {
+export function useHttp(endpoint: string = 'questions', params?: SearchParams) {
   const data = ref<any[]>([])
   const error = ref(null)
   const loader = useLoaderStore()
@@ -19,14 +20,13 @@ export function useHttp(endpoint: string = 'questions', params?: Ref<any>) {
         loader.setLoader(false);
     })
 
-    console.log('isRef(params)', isRef(params));
-    if(isRef(params)) {
+    if(params && isReactive(params)) {
         handleResponse(getData(null));
         watch(params, () => {
-            console.log('watch!!!!!!!!!!!!! requeste!!!!!!!!', params.value);
+            console.log('request with params:', params);
             loader.setLoader(true);
-            handleResponse(getData(params.value));
-        }, { deep: true });
+            handleResponse(getData(params));
+        });
     } else {
         loader.setLoader(true);
         handleResponse(getData());

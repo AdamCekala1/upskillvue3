@@ -4,7 +4,7 @@ import { reactive, watch } from 'vue';
 
 const emit = defineEmits<{(e: 'paramsChange', params: SearchParams): void;}>()
 
-const filtersForm = reactive({title: '', type: null});
+const filtersForm = reactive({title: '', type: null} as SearchParams);
 
 
 watch(filtersForm, () => {
