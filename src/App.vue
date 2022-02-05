@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
-import Loader from '@/components/Loader.vue'
+import TheHeader from '@/components/TheHeader.vue'
+import TheLoader from '@/components/TheLoader.vue'
 </script>
 
 <template>
-  <Header/>
-  <Loader/>
+  <TheHeader/>
+  <TheLoader/>
   <router-view />
 </template>
 

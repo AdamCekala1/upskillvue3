@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Question } from '@/services/questions';
+import { Question } from '@/composables/useQuestions';
 import { defineProps } from 'vue';
 defineProps<{
   questions: Question[],
