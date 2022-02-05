@@ -3,7 +3,7 @@ import QuestionsList from '@/components/QuestionsList.vue';
 import QuestionsFilters from '@/components/QuestionsFilters.vue';
 
 import { useQuestions, Question, SearchParams } from '@/composables/useQuestions';
-import { reactive, Ref, watch } from 'vue';
+import { reactive, Ref } from 'vue';
 
 const params = reactive<SearchParams>({title: '', type: null});
 const updateParams = (newValue: Partial<SearchParams>) => {
