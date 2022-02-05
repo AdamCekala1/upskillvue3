@@ -1,5 +1,6 @@
 import { Ref } from 'vue'
 import { useHttp } from '@/composables/useHttp';
+import { Method } from 'axios';
 
 export enum QuestionType {
     JUNIOR = 'junior',
@@ -19,8 +20,8 @@ export interface Question {
 }
 
 
-export function useQuestions(params?: SearchParams) {
-    const httpValue = useHttp('questions', params);
+export function useQuestions(method: Method, params?: SearchParams, body?: SearchParams) {
+    const httpValue = useHttp('questions', method, params, body);
     const questions: Ref<Question[]> = httpValue.data;
     return { questions }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { QuestionType, SearchParams } from '@/composables/useQuestions';
+import { SearchParams } from '@/composables/useQuestions';
 import { reactive, watch } from 'vue';
+import QuestionsTypeSelect from '@/components/QuestionsTypeSelect.vue';
 
 const emit = defineEmits<{(e: 'paramsChange', params: SearchParams): void;}>()
 
@@ -17,12 +18,8 @@ watch(filtersForm, () => {
 <template>
     title: {{filtersForm.title}}
     type: {{filtersForm.type}}
+    <br/>
 
-    <input placeholder="Basic usage" v-model="filtersForm.title"/>
-    <select name="type" v-model="filtersForm.type">
-        <option value="">--Reset--</option>
-        <option :value="QuestionType.JUNIOR">{{QuestionType.JUNIOR}}</option>
-        <option :value="QuestionType.MIDDLE">{{QuestionType.MIDDLE}}</option>
-        <option :value="QuestionType.SENIOR">{{QuestionType.SENIOR}}</option>
-    </select>
+    <input placeholder="Search title" v-model="filtersForm.title"/>
+    <QuestionsTypeSelect v-model="filtersForm.type"/>
 </template>

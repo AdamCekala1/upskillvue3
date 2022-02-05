@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import QuestionsList from '@/components/QuestionsList.vue';
 import QuestionsFilters from '@/components/QuestionsFilters.vue';
-
 import { useQuestions, Question, SearchParams } from '@/composables/useQuestions';
 import { reactive, Ref } from 'vue';
 
 const params = reactive<SearchParams>({title: '', type: null});
 const updateParams = (newValue: Partial<SearchParams>) => {
      params.title = newValue.title;
+     params.type = newValue.type;
 };
 
-const httpValue = useQuestions(params);
+const httpValue = useQuestions('get', params);
 const questions: Ref<Question[]> = httpValue.questions;
 </script>
 

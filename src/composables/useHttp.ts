@@ -1,13 +1,21 @@
 import { ref, isReactive, watch, reactive } from 'vue'
 import axios from 'axios'
+import {Method} from 'axios'
 import { useLoaderStore } from '@/stores/loader';
 import { SearchParams } from './useQuestions';
 
-export function useHttp(endpoint: string = 'questions', params?: SearchParams) {
+export function useHttp(endpoint: string, method: Method, params?: SearchParams, body?: SearchParams) {
   const data = ref<any[]>([])
   const error = ref(null)
   const loader = useLoaderStore()
-  const getData = (paramsValue?: any) => axios.get('http://localhost:3001/' + endpoint, {params: paramsValue})
+  const getData = (paramsValue?: SearchParams | null) => {
+      return axios({
+        method,
+        url: 'http://localhost:3001/' + endpoint,
+        params: paramsValue,
+        data: body,
+      });
+  }
   const handleResponse = (promise: Promise<any>) =>  promise.then((response: any) => {
         console.log('get ' + endpoint + '  : ', response);
         data.value = response.data;
@@ -23,7 +31,7 @@ export function useHttp(endpoint: string = 'questions', params?: SearchParams) {
     if(params && isReactive(params)) {
         handleResponse(getData(null));
         watch(params, () => {
-            console.log('request with params:', params);
+            console.log('request with params:',params);
             loader.setLoader(true);
             handleResponse(getData(params));
         });
