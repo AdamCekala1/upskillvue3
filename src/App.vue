@@ -6,6 +6,6 @@ import TheLoader from '@/components/TheLoader.vue'
 <template>
   <TheHeader/>
   <TheLoader/>
-  <router-view />
+  <router-view/>
 </template>
 
