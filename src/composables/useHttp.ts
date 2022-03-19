@@ -1,12 +1,13 @@
-import { ref, isReactive, watch, reactive } from 'vue'
+import { ref, isReactive, watch } from 'vue'
 import axios from 'axios'
 import {Method} from 'axios'
 import { useLoaderStore } from '@/stores/loader';
-import { SearchParams } from './useQuestions';
+import { SearchParams } from './questions/questions.interface';
 
-export function useHttp(endpoint: string, method: Method, params?: SearchParams, body?: SearchParams) {
+export function useHttp(endpoint: string, method: Method, params?: any, body?: SearchParams) {
   const data = ref<any[]>([])
-  const error = ref(null)
+  const error = ref('')
+  const status = ref<number>()
   const loader = useLoaderStore()
   const getData = (paramsValue?: SearchParams | null) => {
       return axios({
@@ -18,10 +19,12 @@ export function useHttp(endpoint: string, method: Method, params?: SearchParams,
   }
   const handleResponse = (promise: Promise<any>) =>  promise.then((response: any) => {
         console.log('get ' + endpoint + '  : ', response);
+        status.value = response.status;
         data.value = response.data;
     })
     .catch((err: any) =>{
         console.log(err);
+        status.value = err.status;
         error.value = err
     })
     .finally(() => {
@@ -35,10 +38,13 @@ export function useHttp(endpoint: string, method: Method, params?: SearchParams,
             loader.setLoader(true);
             handleResponse(getData(params));
         });
+    } else if(params) {
+        loader.setLoader(true);
+        handleResponse(getData(params));
     } else {
         loader.setLoader(true);
         handleResponse(getData());
     }
 
-  return { data, error }
+  return { data, error, status }
 }

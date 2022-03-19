@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QuestionType } from '@/composables/useQuestions';
+import { QuestionType } from '@/composables/questions/questions.enum';
 
 defineProps<{modelValue: QuestionType | null}>();
 const emit = defineEmits<{(e: 'update:modelValue', params: QuestionType): void;}>()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SearchParams } from '@/composables/useQuestions';
+import { SearchParams } from '@/composables/questions/questions.interface';
 import { reactive, watch } from 'vue';
 import QuestionsTypeSelect from '@/components/QuestionsTypeSelect.vue';
 
