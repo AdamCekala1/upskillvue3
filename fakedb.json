@@ -2,15 +2,15 @@
   "questions": [
     {
       "id": 1,
-      "title": "aaaaaaaaaaaa",
+      "title": "bbbbbbbbbbb",
       "author": "typicode",
-      "type": "senior"
+      "type": "middle"
     },
     {
       "id": 2,
-      "title": "asdasd-server",
+      "title": "asdasd-server hehe mid",
       "author": "typicode",
-      "type": "junior"
+      "type": "middle"
     },
     {
       "id": 3,
@@ -212,6 +212,16 @@
       "title": "aaaaaaaaaaa",
       "type": "middle",
       "id": 42
+    },
+    {
+      "title": "sadasdasdasd",
+      "type": "middle",
+      "id": 43
+    },
+    {
+      "title": "adam---test1516",
+      "type": "middle",
+      "id": 44
     }
   ]
 }

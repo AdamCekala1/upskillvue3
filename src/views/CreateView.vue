@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CreateForm from '@/components/CreateForm.vue';
-import { useQuestions } from '@/composables/questions/useQuestions';
+import { useQuestions2 } from '@/composables/questions/useQuestions';
 import { SearchParams } from '@/composables/questions/questions.interface';
 import { ref, Ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -8,9 +8,12 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 let someT = ref('title');
 const sendQuestion = (body: SearchParams) => {
-  const {status} = useQuestions('post', null, body, null,       'Question created!', ':(((((');
-  watch(status, (code) => {
-    if(code === 201) {
+  const {createQuestion} = useQuestions2();
+  const data = createQuestion(body);
+
+  watch(data, (value) => {
+    console.log('value', value);
+    if(value) {
       router.push({path: '/'});
     }
   })

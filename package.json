@@ -9,6 +9,7 @@
     "server": "json-server --watch fakedb.json --port 3001"
   },
   "dependencies": {
+    "@vueuse/core": "^8.1.2",
     "ant-design-vue": "^2.2.8",
     "axios": "^0.24.0",
     "pinia": "^2.0.6",

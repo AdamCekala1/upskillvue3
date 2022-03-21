@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { SearchParams } from '@/composables/questions/questions.interface';
-import { reactive, watch } from 'vue';
+import { reactive, watch, defineProps, toRefs } from 'vue';
 import QuestionsTypeSelect from '@/components/QuestionsTypeSelect.vue';
 
 const emit = defineEmits<{(e: 'paramsChange', params: SearchParams): void;}>()
 
-const filtersForm = reactive({title: '', type: null} as SearchParams);
-
+const props = withDefaults(defineProps<{title: string, type: any}>(), {title: '', type: null});
+const filtersForm = reactive({title: props.title, type: props.type} as SearchParams);
 
 watch(filtersForm, () => {
-    console.log('changed!', filtersForm);
-    emit('paramsChange', filtersForm);
+  emit('paramsChange', filtersForm);
 })
 
 </script>
