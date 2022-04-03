@@ -1,63 +1,41 @@
-import { reactive, Ref, ref, watch } from 'vue'
-import { Method } from 'axios';
-import { Question, SearchParams } from '@/composables/questions/questions.interface';
+import { useMyFetch } from '@/composables/useMyFetch';
 import { notification } from 'ant-design-vue';
 
-// const questions = ref<Question[]>([]);
-import { useFetch  } from '@vueuse/core'
-import { useLoaderStore } from '@/stores/loader';
-
 export function useQuestions2() {
-    const urlPrefix = 'http://localhost:3001/questions';
-    const loader = useLoaderStore()
-    const beforeFetch = ({ options }: any) => {
-        loader.setLoader(true);
-        return options;
-    }
-    const afterFetch = (ctx: any) => {
-        loader.setLoader(false);
-        return ctx;
-    };
-    const onFetchError = (ctx: any) => {
-        loader.setLoader(false);
-        notification.error({
-            message: `Error`,
-            description: 'Request failed :(',
+    const urlPrefix = 'questions';
+    const {fetch} = useMyFetch();
+    const afterFetch = (ctx: any, description: string) => {
+        notification.success({
+            message: `Success`,
+            description,
         })
-
-        return ctx
-    };
+        return ctx;
+    }
 
     return {
         createQuestion: (params: any) => {
-            const { data } = useFetch(urlPrefix, {
-                beforeFetch,
-                afterFetch,
-                onFetchError,
-            }).post(params).json();
+            const { data } = fetch(
+              urlPrefix,
+              {afterFetch: (ctx) => afterFetch(ctx, 'Created!')}
+            ).post(params).json();
 
             return data;
         },
         getQuestion: (id: string) => {
-            const { data } = useFetch(urlPrefix + '/' + id, {
-                beforeFetch,
-                afterFetch,
-                onFetchError,
-            }).get().json();
+            const { data } = fetch(urlPrefix + '/' + id).get().json();
 
             return data;
         },
         updateQuestion: (params: any) => {
-            const { data } = useFetch(urlPrefix + '/' +params.id, {
-                beforeFetch,
-                afterFetch,
-                onFetchError,
-            }).patch(params).json();
+            const { data } = fetch(
+              urlPrefix + '/' +params.id,
+              {afterFetch: (ctx) => afterFetch(ctx, 'Updated!')}
+            ).patch(params).json();
 
             return data;
         },
         getQuestions: (params?: any) => {
-            const url = new URL(urlPrefix);
+            let searchParams = '';
 
             if (params) {
                 const filteredParams: any = {};
@@ -66,15 +44,10 @@ export function useQuestions2() {
                         filteredParams[key + '_like'] = params[key];
                     }
                 });
-                const searchParams = new URLSearchParams(filteredParams).toString();
-                url.search = searchParams;
+                searchParams = new URLSearchParams(filteredParams).toString();
             }
 
-            const { data } = useFetch(url.toString(), {
-                beforeFetch,
-                afterFetch,
-                onFetchError,
-            }).get().json();
+            const { data } = fetch(`${urlPrefix}?${searchParams}`).get().json();
 
             return data;
         },
