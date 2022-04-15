@@ -50,10 +50,7 @@ const onSubmit = handleSubmit((values) => {
 })
 
 onBeforeMount(() => {
-  console.log('props', props);
   if(props.question) {
-    console.log('props.question.type', props.question.type);
-    console.log('props.question.title', props.question.title);
     typeSetValue(props.question.type);
     titleSetValue(props.question.title);
   }
@@ -70,11 +67,11 @@ onBeforeMount(() => {
         @blur="titleHandleBlur"
         @input="titleHandleChange"/>
     <br/>
-    {{titleErrorMessage}}
+    <p>{{titleErrorMessage}}</p>
     <br/>
     <QuestionsTypeSelect name="type" @blur="typeHandleBlur" v-model="typeValue"/>
     <br/>
-    {{typeErrorMessage}}
+    <p>{{typeErrorMessage}}</p>
     <br/>
     <button>Submit</button>
   </form>

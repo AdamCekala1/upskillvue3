@@ -17,6 +17,7 @@ export function useMyFetch() {
     return ctx;
   };
 
+
   const onFetchError = (ctx: any) => {
     loader.setLoader(false);
     notification.error({
@@ -27,16 +28,18 @@ export function useMyFetch() {
     return ctx
   };
 
-  return {fetch: createFetch({
-    baseUrl,
-    options: {
-      beforeFetch,
-      afterFetch,
-      onFetchError,
-    },
-    fetchOptions: {
-      mode: 'cors',
-    },
-  })}
+  return {
+    fetch: createFetch({
+      baseUrl,
+      options: {
+        beforeFetch,
+        afterFetch,
+        onFetchError,
+      },
+      fetchOptions: {
+        mode: 'cors',
+      },
+    })
+  }
 }
 

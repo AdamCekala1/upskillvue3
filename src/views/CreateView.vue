@@ -6,12 +6,15 @@ import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
 const sendQuestion = (body: SearchParams) => {
   const {createQuestion} = useQuestions2();
   const data = createQuestion(body);
 
   watch(data, (value) => {
     if(value) {
+      console.log('-----------value', value);
+      console.log('-----------router', router);
       router.push({path: '/'});
     }
   })
@@ -20,6 +23,6 @@ const sendQuestion = (body: SearchParams) => {
 
 <template>
   <h1>This is an create view page</h1>
-  <CreateForm @form-submit="sendQuestion"/>
+  <CreateForm :title="'Create'" @form-submit="sendQuestion"/>
 </template>
 

@@ -1,7 +1,16 @@
-import { useMyFetch } from '@/composables/useMyFetch';
 import { notification } from 'ant-design-vue';
+import { useMyFetch } from '@/composables/useMyFetch';
+import { Question } from '@/composables/questions/questions.interface';
+import { Ref } from 'vue';
 
-export function useQuestions2() {
+export interface UseQuestionsI {
+    createQuestion: (params: any) => Ref<Question>,
+    getQuestion: (id: string) => Ref<Question>,
+    updateQuestion: (id: string) => Ref<Question>,
+    getQuestions: (params: any) => Ref<Question[]>,
+}
+
+export function useQuestions2(): UseQuestionsI {
     const urlPrefix = 'questions';
     const {fetch} = useMyFetch();
     const afterFetch = (ctx: any, description: string) => {
@@ -9,6 +18,7 @@ export function useQuestions2() {
             message: `Success`,
             description,
         })
+
         return ctx;
     }
 
@@ -44,10 +54,10 @@ export function useQuestions2() {
                         filteredParams[key + '_like'] = params[key];
                     }
                 });
-                searchParams = new URLSearchParams(filteredParams).toString();
+                searchParams = `?${new URLSearchParams(filteredParams).toString()}`;
             }
 
-            const { data } = fetch(`${urlPrefix}?${searchParams}`).get().json();
+            const { data } = fetch(`${urlPrefix}${searchParams}`).get().json();
 
             return data;
         },

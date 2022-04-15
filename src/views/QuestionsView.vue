@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { useUrlSearchParams  } from '@vueuse/core'
 
 import QuestionsList from '@/components/QuestionsList.vue';
@@ -8,7 +8,7 @@ import { useQuestions2 } from '@/composables/questions/useQuestions';
 import { SearchParams } from '@/composables/questions/questions.interface';
 
 const urlSearchParams = useUrlSearchParams('history', {removeFalsyValues: true, removeNullishValues: true});
-let questions = reactive({value: {}});
+const questions = ref([]);
 
 const updateParams = (newValue: Partial<SearchParams>) => {
   urlSearchParams.title = newValue.title;
@@ -19,9 +19,10 @@ watch(urlSearchParams, () => {
   const {getQuestions} = useQuestions2();
   const newQuestions = getQuestions(urlSearchParams);
 
+  // todo: check watch
   watch(newQuestions, () => {
     questions.value = newQuestions;
-  });
+  })
 }, {immediate: true})
 </script>
 
