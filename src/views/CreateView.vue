@@ -6,15 +6,13 @@ import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const {createQuestion} = useQuestions2();
 
 const sendQuestion = (body: SearchParams) => {
-  const {createQuestion} = useQuestions2();
   const data = createQuestion(body);
 
   watch(data, (value) => {
     if(value) {
-      console.log('-----------value', value);
-      console.log('-----------router', router);
       router.push({path: '/'});
     }
   })
