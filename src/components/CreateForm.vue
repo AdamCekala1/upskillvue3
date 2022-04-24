@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as yup from 'yup';
-import { onBeforeMount, toRef, toRefs, watch } from 'vue';
+import { onBeforeMount, toRefs, watch } from 'vue';
 import { useForm, useField } from 'vee-validate';
 
 import { SearchParams } from '@/composables/questions/questions.interface';
@@ -45,6 +45,7 @@ const {
 })
 
 const onSubmit = handleSubmit((values) => {
+  console.log('values', values);
   emit('formSubmit', values);
 })
 
@@ -72,6 +73,6 @@ onBeforeMount(() => {
     <br/>
     <p>{{typeErrorMessage}}</p>
     <br/>
-    <button>Submit</button>
+    <button type="submit" >Submit</button>
   </form>
 </template>
