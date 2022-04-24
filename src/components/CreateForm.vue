@@ -5,7 +5,6 @@ import { useForm, useField } from 'vee-validate';
 
 import { SearchParams } from '@/composables/questions/questions.interface';
 import QuestionsTypeSelect from '@/components/QuestionsTypeSelect.vue';
-import { QuestionType } from '@/composables/questions/questions.enum';
 
 const props = withDefaults(defineProps<{title: string, question: SearchParams}>(), {title: 'Create question'})
 const { title } = toRefs(props);

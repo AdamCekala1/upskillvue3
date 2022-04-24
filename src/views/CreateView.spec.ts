@@ -53,5 +53,5 @@ describe('CreateView', () => {
 
     // assert
     expect(mockPush).toHaveBeenCalledWith({path: '/'});
-  })
+  });
 })
