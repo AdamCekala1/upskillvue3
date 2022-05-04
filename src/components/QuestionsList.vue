@@ -23,7 +23,7 @@ const openEditView = async(question: Question) => {
 
 <template>
     <h1>{{loadQuestionError}}</h1>
-    <div v-if="questions.length">
+    <div v-if="questions && questions.length">
         <div>fake record</div><button @click="openEditView({id: 'fake'})">Edit</button>
         <div v-for="question in questions" :key="question.id">
             <div>{{question}}</div><button @click="openEditView(question)">Edit</button>
