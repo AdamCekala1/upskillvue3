@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
-import { useUrlSearchParams  } from '@vueuse/core'
-
 import QuestionsList from '@/components/QuestionsList.vue';
 import QuestionsFilters from '@/components/QuestionsFilters.vue';
 import { useQuestions2 } from '@/composables/questions/useQuestions';
-import { SearchParams } from '@/composables/questions/questions.interface';
+import {useQuestions} from "@/composables/useQuestions";
+import {watch} from "vue";
 
-const urlSearchParams = useUrlSearchParams('history', {removeFalsyValues: true, removeNullishValues: true});
-const questions = ref([]);
-
-const updateParams = (newValue: Partial<SearchParams>) => {
-  urlSearchParams.title = newValue.title;
-  urlSearchParams.type = newValue.type;
-};
+const { questions, updateQuestions, urlSearchParams } = useQuestions();
 
 watch(urlSearchParams, () => {
   const {getQuestions} = useQuestions2();
@@ -21,12 +13,13 @@ watch(urlSearchParams, () => {
 
   // todo: check watch
   watch(newQuestions, () => {
-    questions.value = newQuestions;
+
+    updateQuestions(newQuestions.value);
   })
 }, {immediate: true})
 </script>
 
 <template>
-     <QuestionsFilters :title="urlSearchParams.title" :type="urlSearchParams.type" @params-change="updateParams"/>
-     <QuestionsList :questions="questions.value"/>
+     <QuestionsFilters/>
+     <QuestionsList :questions="questions"/>
 </template>
