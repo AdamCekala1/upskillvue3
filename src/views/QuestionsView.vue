@@ -1,32 +1,30 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
-import { useUrlSearchParams  } from '@vueuse/core'
-
 import QuestionsList from '@/components/QuestionsList.vue';
 import QuestionsFilters from '@/components/QuestionsFilters.vue';
-import { useQuestions2 } from '@/composables/questions/useQuestions';
-import { SearchParams } from '@/composables/questions/questions.interface';
+import {useQuestions} from "@/composables/useQuestions";
+import {computed} from "vue";
+import {useMyFetch} from "@/composables/useMyFetch";
 
-const urlSearchParams = useUrlSearchParams('history', {removeFalsyValues: true, removeNullishValues: true});
-const questions = ref([]);
+const { urlSearchParams } = useQuestions();
 
-const updateParams = (newValue: Partial<SearchParams>) => {
-  urlSearchParams.title = newValue.title;
-  urlSearchParams.type = newValue.type;
-};
+const url = computed(() => {
+  let searchParams = '';
 
-watch(urlSearchParams, () => {
-  const {getQuestions} = useQuestions2();
-  const newQuestions = getQuestions(urlSearchParams);
+  const filteredParams: any = {};
+  Object.keys(urlSearchParams).forEach((key) => {
+    if (urlSearchParams[key]) {
+      filteredParams[key + '_like'] = urlSearchParams[key];
+    }
+  });
+  searchParams = `?${new URLSearchParams(filteredParams).toString()}`;
 
-  // todo: check watch
-  watch(newQuestions, () => {
-    questions.value = newQuestions;
-  })
-}, {immediate: true})
+  return `questions${searchParams}`;
+});
+
+const { data: questions } = useMyFetch(url, { refetch: true }).get().json();
 </script>
 
 <template>
-     <QuestionsFilters :title="urlSearchParams.title" :type="urlSearchParams.type" @params-change="updateParams"/>
-     <QuestionsList :questions="questions.value"/>
+     <QuestionsFilters/>
+     <QuestionsList :questions="questions"/>
 </template>
