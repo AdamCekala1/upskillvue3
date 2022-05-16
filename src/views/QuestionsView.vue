@@ -1,22 +1,27 @@
 <script setup lang="ts">
 import QuestionsList from '@/components/QuestionsList.vue';
 import QuestionsFilters from '@/components/QuestionsFilters.vue';
-import { useQuestions2 } from '@/composables/questions/useQuestions';
 import {useQuestions} from "@/composables/useQuestions";
-import {watch} from "vue";
+import {computed} from "vue";
+import {useMyFetch} from "@/composables/useMyFetch";
 
-const { questions, updateQuestions, urlSearchParams } = useQuestions();
+const { urlSearchParams } = useQuestions();
 
-watch(urlSearchParams, () => {
-  const {getQuestions} = useQuestions2();
-  const newQuestions = getQuestions(urlSearchParams);
+const url = computed(() => {
+  let searchParams = '';
 
-  // todo: check watch
-  watch(newQuestions, () => {
+  const filteredParams: any = {};
+  Object.keys(urlSearchParams).forEach((key) => {
+    if (urlSearchParams[key]) {
+      filteredParams[key + '_like'] = urlSearchParams[key];
+    }
+  });
+  searchParams = `?${new URLSearchParams(filteredParams).toString()}`;
 
-    updateQuestions(newQuestions.value);
-  })
-}, {immediate: true})
+  return `questions${searchParams}`;
+});
+
+const { data: questions } = useMyFetch(url, { refetch: true }).get().json();
 </script>
 
 <template>

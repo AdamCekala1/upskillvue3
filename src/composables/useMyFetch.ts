@@ -1,45 +1,33 @@
 import { notification } from 'ant-design-vue';
 import { useLoaderStore } from '@/stores/loader';
-import { createFetch } from '@vueuse/core';
+import {AfterFetchContext, createFetch, OnFetchErrorContext} from '@vueuse/core';
 
-export function useMyFetch() {
-  const baseUrl = 'http://localhost:3001/';
-  const loader = useLoaderStore()
+export const useMyFetch = createFetch({
+  baseUrl: 'http://localhost:3001/',
+  options: {
+    beforeFetch({ options }) {
+      const loader = useLoaderStore()
+      loader.setLoader(true);
+      return { options };
+    },
+    afterFetch(ctx: AfterFetchContext) {
+      const loader = useLoaderStore()
+      loader.setLoader(false);
 
-  const beforeFetch = ({ options }: any) => {
-    loader.setLoader(true);
-    return options;
-  }
+      return ctx;
+    },
+    onFetchError(ctx: OnFetchErrorContext) {
+      const loader = useLoaderStore()
+      loader.setLoader(false);
+      notification.error({
+        message: `Error`,
+        description: 'Request failed :(',
+      })
 
-  const afterFetch = (ctx: any) => {
-    loader.setLoader(false);
-
-    return ctx;
-  };
-
-
-  const onFetchError = (ctx: any) => {
-    loader.setLoader(false);
-    notification.error({
-      message: `Error`,
-      description: 'Request failed :(',
-    })
-
-    return ctx
-  };
-
-  return {
-    fetch: createFetch({
-      baseUrl,
-      options: {
-        beforeFetch,
-        afterFetch,
-        onFetchError,
-      },
-      fetchOptions: {
-        mode: 'cors',
-      },
-    })
-  }
-}
-
+      return ctx
+    }
+  },
+  fetchOptions: {
+    mode: 'cors',
+  },
+})
